@@ -84,7 +84,7 @@ export default function Hero() {
             {/* Title */}
             <div className="space-y-1">
               <motion.h1
-                className="font-signature text-[8rem] sm:text-[9rem] lg:text-[12rem] text-white leading-none select-none"
+                className="font-signature text-[0rem] sm:text-[9rem] lg:text-[12rem] text-white leading-none select-none"
                 style={{
                   textShadow: '0 0 70px rgba(14,165,233,0.45), 0 3px 24px rgba(0,0,0,0.45)',
                 }}
