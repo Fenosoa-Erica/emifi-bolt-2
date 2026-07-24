@@ -129,31 +129,31 @@ function ClipCard({ clip, index }: { clip: typeof clips[0]; index: number }) {
         </div>
       </div>
 
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        <h4 className="font-semibold text-slate-900 dark:text-white text-sm leading-tight truncate">{clip.title}</h4>
-        <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">{clip.album}</p>
-        <div className="flex items-center gap-1.5 mt-1.5">
-          {clip.platform === 'youtube'
-            ? <Youtube size={12} className="text-red-500" />
-            : <Facebook size={12} className="text-blue-600" />
-          }
-          <span className="text-slate-400 text-xs capitalize">{clip.platform}</span>
+      {/* Info + button stacked to avoid overflow on mobile */}
+      <div className="flex-1 min-w-0 flex flex-col gap-2">
+        <div className="min-w-0">
+          <h4 className="font-semibold text-slate-900 dark:text-white text-sm leading-tight truncate">{clip.title}</h4>
+          <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">{clip.album}</p>
+          <div className="flex items-center gap-1.5 mt-1.5">
+            {clip.platform === 'youtube'
+              ? <Youtube size={12} className="text-red-500" />
+              : <Facebook size={12} className="text-blue-600" />
+            }
+            <span className="text-slate-400 text-xs capitalize">{clip.platform}</span>
+          </div>
         </div>
+        <motion.a
+          href={clip.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="self-start flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 text-xs font-semibold hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors"
+        >
+          <span>Regarder</span>
+          <ExternalLink size={11} />
+        </motion.a>
       </div>
-
-      {/* Watch button */}
-      <motion.a
-        href={clip.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 text-xs font-semibold hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors flex-shrink-0"
-      >
-        <span>Regarder</span>
-        <ExternalLink size={11} />
-      </motion.a>
     </motion.div>
   );
 }
