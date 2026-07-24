@@ -90,7 +90,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-slate-600 hover:text-sky-400 transition-colors duration-200 text-xs group"
           >
-            <span>2026 Fenosoa Erica NIRINDRAIBE</span>
+            <span>Développé par Fenosoa Erica NIRINDRAIBE</span>
             <ExternalLink size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
         </div>

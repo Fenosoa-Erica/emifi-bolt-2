@@ -216,7 +216,11 @@ export default function Navbar() {
               whileHover={{ scale: 1.05 }}
               className="flex-shrink-0"
             >
-              <img src="/assets/images/logo.png" alt="EMIFI" className="h-10 lg:h-12 w-auto object-contain" />
+              <img
+                src="/assets/images/logo.png"
+                alt="EMIFI"
+                className="h-10 lg:h-12 w-auto object-contain dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.65)]"
+              />
             </motion.a>
 
             {/* Desktop Nav */}
@@ -293,7 +297,7 @@ export default function Navbar() {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >
               <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-navy-700">
-                <img src="/assets/images/logo.png" alt="EMIFI" className="h-9 w-auto" />
+                <img src="/assets/images/logo.png" alt="EMIFI" className="h-9 w-auto dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.55)]" />
                 <button
                   onClick={() => setMenuOpen(false)}
                   className="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-navy-700 transition-colors"
