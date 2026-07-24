@@ -5,7 +5,7 @@ export interface Song {
   duration: string;
   coverUrl: string;
   src: string;
-  lyrics: string;
+  lyricsFile: string;
 }
 
 export interface Album {
@@ -42,42 +42,7 @@ export const songs: Song[] = [
     duration: '0:00',
     coverUrl: '/assets/images/bg.jpg',
     src: '/assets/song/ifonako.mp3',
-    lyrics: `Ifonako ny Tompo Masina
-Ifonako ny Fanahy Masina
-Ho Anao aho mihono
-Eto am-piainanako
-
-Tsy misy hafa ankoatranao
-Ianao no Mpamonjy ahy
-Ny Fitiavanao no mahavonjy
-Misaotra Anao Jesoa
-
-[Refrain]
-Ifonako Ianao
-Ao am-poko mandrakizay
-Ifonako Ianao
-Ny Tompo sy Mpamonjy
-
-Ny Fitiavanao tsy misy farany
-Maharitra mandrakizay
-Ny Teninao no hazavana
-Amin'ny lalako iainanako
-
-Ianao no mahafoy ahy
-Tsy manadino Ianao
-Ny Firahalahiavina Aminao
-No antony hifaliko
-
-[Refrain]
-Ifonako Ianao
-Ao am-poko mandrakizay
-Ifonako Ianao
-Ny Tompo sy Mpamonjy
-
-Alleluia, Alleluia
-Ho anao ny voninahitra
-Alleluia, Alleluia
-Jesoa Kristy Tompo`,
+    lyricsFile: 'ifonako.txt',
   },
   {
     id: '2',
@@ -86,42 +51,7 @@ Jesoa Kristy Tompo`,
     duration: '0:00',
     coverUrl: '/assets/images/bg.jpg',
     src: '/assets/song/tsara loatra.mp3',
-    lyrics: `Tsara loatra ny fitiavanao
-Tsara loatra ny fahasoavanao
-Isan'andro sy isan-alina
-Misaotra Anao Tompo
-
-Na dia misy aza ny fanahiahy
-Manantena foana aho Aminao
-Fa Ianao no Andriamaniko
-Tsy mivadika Ianao
-
-[Refrain]
-Tsara loatra ho ahy
-Ny Tomponay Jesoa Kristy
-Tsara loatra ho ahy
-Ny famonjena nataonao
-
-Ny Teninao no hery amiko
-Rehefa reraka ny foko
-Ny fitiavanao no mamelona
-Ny ainy ao anatiko
-
-Tsy maintsy hidera Anao aho
-Amin'ny foko manontolo
-Ny voninahitrao manjaka
-Amin'ny fiainako
-
-[Refrain]
-Tsara loatra ho ahy
-Ny Tomponay Jesoa Kristy
-Tsara loatra ho ahy
-Ny famonjena nataonao
-
-Ho anao ny dera sy voninahitra
-Ho anao ny fiderana mandrakizay
-Tsara loatra Ianao Tompo
-Tsara loatra Ianao`,
+    lyricsFile: 'tsara_loatra.txt',
   },
 ];
 
