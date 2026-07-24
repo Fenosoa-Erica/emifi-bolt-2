@@ -135,7 +135,7 @@ export default function Gallery() {
 
   return (
     <section id="galerie" className="relative overflow-hidden bg-white dark:bg-navy-900" aria-label="Galerie photos">
-      <div className="container-max z-10 section-padding ">
+      <div className="container-max section-padding ">
         {/* Header */}
         <motion.div
           ref={titleRef}
