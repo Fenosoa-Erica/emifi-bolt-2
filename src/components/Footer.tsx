@@ -90,7 +90,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-slate-400 dark:text-slate-500 text-xs">
-            © {new Date().getFullYear()} EMIFI – Emit Mikalo Fiderana. Tous droits réservés.
+            © 2026 EMIFI – Emit Mikalo Fiderana. Tous droits réservés.
           </p>
           <a
             href="http://fenosoa-erica.bolt.host"
