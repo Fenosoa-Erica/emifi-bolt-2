@@ -4,6 +4,8 @@ export interface Song {
   album: string;
   duration: string;
   coverUrl: string;
+  src: string;
+  lyricsFile: string;
 }
 
 export interface Album {
@@ -33,11 +35,24 @@ export interface GalleryImage {
 }
 
 export const songs: Song[] = [
-  { id: '1', title: 'Fiderana ho An\'ny Tompo', album: 'Voalohany', duration: '4:32', coverUrl: '/assets/images/bg.jpg' },
-  { id: '2', title: 'Misaotra Anao Jesoa', album: 'Voalohany', duration: '3:58', coverUrl: '/assets/images/bg.jpg' },
-  { id: '3', title: 'Mitsangàna ry Firenena', album: 'Fanantenana', duration: '5:10', coverUrl: '/assets/images/bg.jpg' },
-  { id: '4', title: 'Teny Fitiavana', album: 'Fanantenana', duration: '4:15', coverUrl: '/assets/images/bg.jpg' },
-  { id: '5', title: 'Dera sy Voninahitra', album: 'Fanantenana', duration: '3:47', coverUrl: '/assets/images/bg.jpg' },
+  {
+    id: '1',
+    title: 'Ifonako',
+    album: 'EMIFI',
+    duration: '0:00',
+    coverUrl: '/assets/images/bg.jpg',
+    src: '/assets/song/ifonako.mp3',
+    lyricsFile: 'ifonako.txt',
+  },
+  {
+    id: '2',
+    title: 'Tsara Loatra',
+    album: 'EMIFI',
+    duration: '0:00',
+    coverUrl: '/assets/images/bg.jpg',
+    src: '/assets/song/tsara loatra.mp3',
+    lyricsFile: 'tsara_loatra.txt',
+  },
 ];
 
 export const albums: Album[] = [
@@ -84,8 +99,8 @@ export const albums: Album[] = [
     songsCount: 9,
     coverUrl: '/assets/images/bg.jpg',
     songs: [
-      'Feon\'ny Fiainana',
-      'Ny Fiainana Ao Aminao',
+      'Ifonako',
+      'Tsara Loatra',
       'Anio sy Mandrakizay',
       'Tompo Masina',
       'Midera Anao',
