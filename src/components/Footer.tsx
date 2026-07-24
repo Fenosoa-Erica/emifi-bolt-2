@@ -31,7 +31,7 @@ export default function Footer() {
             <img
               src="/assets/images/logo.png"
               alt="EMIFI"
-              className="h-10 w-10 dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.65)]"
+              className="h-15 w-auto dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.65)]"
             />
             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-xs">
               La chorale universitaire de l'EMIT – Université de Fianarantsoa. Une voix, une mission.
