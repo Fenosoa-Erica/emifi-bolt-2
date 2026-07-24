@@ -95,7 +95,7 @@ export default function Hero() {
                 Emifi
               </motion.h1>
               <motion.p
-                className="text-sky-300 text-sm sm:text-base font-semibold tracking-[0.28em] uppercase font-sans"
+                className="text-sky-300 text-m sm:text-base font-semibold tracking-[0.28em] uppercase font-sans"
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.25 }}
