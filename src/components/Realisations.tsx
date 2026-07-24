@@ -44,7 +44,7 @@ function AlbumCard({ album, index }: { album: typeof albums[0]; index: number })
       <div className="p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h3 className="font-display font-bold text-slate-900 dark:text-white text-lg leading-tight">{album.title}</h3>
+            <h3 className="font-sans font-bold text-slate-900 dark:text-white text-lg leading-tight">{album.title}</h3>
             <div className="flex items-center gap-3 mt-1.5 text-slate-500 dark:text-slate-400 text-xs">
               <span className="flex items-center gap-1"><Calendar size={11} /> {album.year}</span>
               <span className="flex items-center gap-1"><Music size={11} /> {album.songsCount} chansons</span>
@@ -198,7 +198,7 @@ export default function Realisations() {
         {/* Albums */}
         <div className="mb-16">
           <motion.h3
-            className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-8 flex items-center gap-3"
+            className="text-2xl font-sans font-bold text-slate-900 dark:text-white mb-8 flex items-center gap-3"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -209,7 +209,7 @@ export default function Realisations() {
             </div>
             Albums
           </motion.h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
             {albums.map((album, i) => (
               <AlbumCard key={album.id} album={album} index={i} />
             ))}
@@ -219,7 +219,7 @@ export default function Realisations() {
         {/* Clips */}
         <div>
           <motion.h3
-            className="text-2xl font-display font-bold text-slate-900 dark:text-white mb-8 flex items-center gap-3"
+            className="text-2xl font-sans font-bold text-slate-900 dark:text-white mb-8 flex items-center gap-3"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
