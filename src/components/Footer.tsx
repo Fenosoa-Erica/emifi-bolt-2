@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Music4, Facebook, Youtube, Mail, MapPin, Heart } from 'lucide-react';
+import { Facebook, Youtube, Mail, MapPin, ExternalLink } from 'lucide-react';
 
 const navLinks = [
   { label: 'Accueil', href: '#accueil' },
@@ -23,32 +23,22 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-10">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <img src="/assets/images/logo.png" alt="EMIFI" className="h-10 w-auto" />
-            </div>
+            <img src="/assets/images/logo.png" alt="EMIFI" className="h-10 w-auto" />
             <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
               La chorale universitaire de l'EMIT – Université de Fianarantsoa. Une voix, une mission.
             </p>
             <div className="flex items-center gap-3">
               <motion.a
-                href="https://www.facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-700/20 hover:text-blue-400 hover:border-blue-500/20 transition-all duration-300"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                aria-label="Facebook EMIFI"
+                whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} aria-label="Facebook EMIFI"
               >
                 <Facebook size={15} />
               </motion.a>
               <motion.a
-                href="https://www.youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-700/20 hover:text-red-400 hover:border-red-500/20 transition-all duration-300"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                aria-label="YouTube EMIFI"
+                whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} aria-label="YouTube EMIFI"
               >
                 <Youtube size={15} />
               </motion.a>
@@ -89,11 +79,20 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-500 text-xs">
-          <p>© {new Date().getFullYear()} EMIFI – Emit Mikalo Fiderana. Tous droits réservés.</p>
-          <p className="flex items-center gap-1">
-            Fait avec <Heart size={11} className="text-red-400 fill-red-400" /> pour la chorale
+        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-slate-500 text-xs">
+            © {new Date().getFullYear()} EMIFI – Emit Mikalo Fiderana. Tous droits réservés.
           </p>
+          {/* Developer signature */}
+          <a
+            href="http://fenosoa-erica.bolt.host"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-slate-600 hover:text-sky-400 transition-colors duration-200 text-xs group"
+          >
+            <span>2026 Fenosoa Erica NIRINDRAIBE</span>
+            <ExternalLink size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+          </a>
         </div>
       </div>
     </footer>

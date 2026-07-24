@@ -4,6 +4,8 @@ export interface Song {
   album: string;
   duration: string;
   coverUrl: string;
+  src: string;
+  lyrics: string;
 }
 
 export interface Album {
@@ -33,11 +35,94 @@ export interface GalleryImage {
 }
 
 export const songs: Song[] = [
-  { id: '1', title: 'Fiderana ho An\'ny Tompo', album: 'Voalohany', duration: '4:32', coverUrl: '/assets/images/bg.jpg' },
-  { id: '2', title: 'Misaotra Anao Jesoa', album: 'Voalohany', duration: '3:58', coverUrl: '/assets/images/bg.jpg' },
-  { id: '3', title: 'Mitsangàna ry Firenena', album: 'Fanantenana', duration: '5:10', coverUrl: '/assets/images/bg.jpg' },
-  { id: '4', title: 'Teny Fitiavana', album: 'Fanantenana', duration: '4:15', coverUrl: '/assets/images/bg.jpg' },
-  { id: '5', title: 'Dera sy Voninahitra', album: 'Fanantenana', duration: '3:47', coverUrl: '/assets/images/bg.jpg' },
+  {
+    id: '1',
+    title: 'Ifonako',
+    album: 'EMIFI',
+    duration: '0:00',
+    coverUrl: '/assets/images/bg.jpg',
+    src: '/assets/song/ifonako.mp3',
+    lyrics: `Ifonako ny Tompo Masina
+Ifonako ny Fanahy Masina
+Ho Anao aho mihono
+Eto am-piainanako
+
+Tsy misy hafa ankoatranao
+Ianao no Mpamonjy ahy
+Ny Fitiavanao no mahavonjy
+Misaotra Anao Jesoa
+
+[Refrain]
+Ifonako Ianao
+Ao am-poko mandrakizay
+Ifonako Ianao
+Ny Tompo sy Mpamonjy
+
+Ny Fitiavanao tsy misy farany
+Maharitra mandrakizay
+Ny Teninao no hazavana
+Amin'ny lalako iainanako
+
+Ianao no mahafoy ahy
+Tsy manadino Ianao
+Ny Firahalahiavina Aminao
+No antony hifaliko
+
+[Refrain]
+Ifonako Ianao
+Ao am-poko mandrakizay
+Ifonako Ianao
+Ny Tompo sy Mpamonjy
+
+Alleluia, Alleluia
+Ho anao ny voninahitra
+Alleluia, Alleluia
+Jesoa Kristy Tompo`,
+  },
+  {
+    id: '2',
+    title: 'Tsara Loatra',
+    album: 'EMIFI',
+    duration: '0:00',
+    coverUrl: '/assets/images/bg.jpg',
+    src: '/assets/song/tsara loatra.mp3',
+    lyrics: `Tsara loatra ny fitiavanao
+Tsara loatra ny fahasoavanao
+Isan'andro sy isan-alina
+Misaotra Anao Tompo
+
+Na dia misy aza ny fanahiahy
+Manantena foana aho Aminao
+Fa Ianao no Andriamaniko
+Tsy mivadika Ianao
+
+[Refrain]
+Tsara loatra ho ahy
+Ny Tomponay Jesoa Kristy
+Tsara loatra ho ahy
+Ny famonjena nataonao
+
+Ny Teninao no hery amiko
+Rehefa reraka ny foko
+Ny fitiavanao no mamelona
+Ny ainy ao anatiko
+
+Tsy maintsy hidera Anao aho
+Amin'ny foko manontolo
+Ny voninahitrao manjaka
+Amin'ny fiainako
+
+[Refrain]
+Tsara loatra ho ahy
+Ny Tomponay Jesoa Kristy
+Tsara loatra ho ahy
+Ny famonjena nataonao
+
+Ho anao ny dera sy voninahitra
+Ho anao ny fiderana mandrakizay
+Tsara loatra Ianao Tompo
+Tsara loatra Ianao`,
+  },
 ];
 
 export const albums: Album[] = [
@@ -84,8 +169,8 @@ export const albums: Album[] = [
     songsCount: 9,
     coverUrl: '/assets/images/bg.jpg',
     songs: [
-      'Feon\'ny Fiainana',
-      'Ny Fiainana Ao Aminao',
+      'Ifonako',
+      'Tsara Loatra',
       'Anio sy Mandrakizay',
       'Tompo Masina',
       'Midera Anao',
