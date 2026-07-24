@@ -151,7 +151,7 @@ export default function Gallery() {
           <h2 className="section-title text-slate-900 dark:text-white mb-3">
             Nos <span className="text-gradient">moments</span>
           </h2>
-          <p className="section-subtitle max-w-lg">
+          <p className="section-subtitle ">
             Prestations, répétitions et instants de partage capturés au fil des années.
           </p>
         </motion.div>
