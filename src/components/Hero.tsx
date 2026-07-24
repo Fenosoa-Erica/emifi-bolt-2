@@ -84,16 +84,16 @@ export default function Hero() {
             {/* Title */}
             <div className="space-y-1">
               <motion.h1
-                className="font-signature text-[5.5rem] sm:text-[7rem] lg:text-[9rem] text-white leading-none select-none"
+                className="font-signature font-bold text-[6rem] sm:text-[8rem] lg:text-[10rem] text-white leading-none select-none"
                 style={{
-                  textShadow: '0 0 80px rgba(14,165,233,0.5), 0 4px 32px rgba(0,0,0,0.4)',
-                  letterSpacing: '0.02em',
+                  textShadow: '0 0 60px rgba(14,165,233,0.35), 0 2px 20px rgba(0,0,0,0.5)',
+                  letterSpacing: '0.01em',
                 }}
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.1 }}
               >
-                EMIFI
+                Emifi
               </motion.h1>
               <motion.p
                 className="text-sky-300 text-sm sm:text-base font-semibold tracking-[0.28em] uppercase font-sans"

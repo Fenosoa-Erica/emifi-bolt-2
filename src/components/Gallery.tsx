@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, Camera } from 'lucide-react';
 import { galleryImages } from '@/data';
 
+/* ─── Lightbox ──────────────────────────────────────────────────────────── */
 interface LightboxProps {
   index: number;
   onClose: () => void;
@@ -28,70 +29,47 @@ function Lightbox({ index, onClose, onPrev, onNext }: LightboxProps) {
       onKeyDown={handleKey}
       tabIndex={0}
     >
-      {/* Backdrop */}
       <motion.div
         className="absolute inset-0 bg-black/90 backdrop-blur-xl"
         onClick={onClose}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
       />
 
-      {/* Image */}
       <motion.div
         className="relative z-10 max-w-5xl w-full mx-4"
-        initial={{ scale: 0.85, opacity: 0 }}
+        initial={{ scale: 0.88, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.85, opacity: 0 }}
-        transition={{ type: 'spring', damping: 20 }}
+        exit={{ scale: 0.88, opacity: 0 }}
+        transition={{ type: 'spring', damping: 22 }}
       >
         <img
           src={image.src}
           alt={image.alt}
           className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
         />
-
-        {/* Caption */}
         <div className="absolute bottom-0 left-0 right-0 p-6 rounded-b-2xl bg-gradient-to-t from-black/60 to-transparent">
           <p className="text-white font-semibold">{image.alt}</p>
           <p className="text-white/70 text-sm">{image.description}</p>
         </div>
-
-        {/* Counter */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm text-white text-xs">
           {index + 1} / {galleryImages.length}
         </div>
       </motion.div>
 
-      {/* Close */}
       <motion.button
-        className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-        onClick={onClose}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        aria-label="Fermer"
+        className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        onClick={onClose} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} aria-label="Fermer"
       >
         <X size={18} />
       </motion.button>
-
-      {/* Prev */}
       <motion.button
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-        onClick={onPrev}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        aria-label="Précédente"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        onClick={onPrev} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} aria-label="Précédente"
       >
         <ChevronLeft size={22} />
       </motion.button>
-
-      {/* Next */}
       <motion.button
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-        onClick={onNext}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        aria-label="Suivante"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        onClick={onNext} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} aria-label="Suivante"
       >
         <ChevronRight size={22} />
       </motion.button>
@@ -99,162 +77,147 @@ function Lightbox({ index, onClose, onPrev, onNext }: LightboxProps) {
   );
 }
 
-// 3-4-3 masonry layout
-const rows: number[][] = [
-  [0, 1, 2],
-  [3, 4, 5, 6],
-  [7, 8, 9],
-];
-
-const colSpanClass = (index: number, rowIndex: number): string => {
-  if (rowIndex === 0) {
-    if (index === 0) return 'col-span-2 row-span-2';
-    return 'col-span-1';
-  }
-  if (rowIndex === 1) {
-    if (index === 0) return 'col-span-2';
-    return 'col-span-1';
-  }
-  if (rowIndex === 2) {
-    if (index === 1) return 'col-span-2';
-    return 'col-span-1';
-  }
-  return 'col-span-1';
-};
-
-function GalleryItem({ image, globalIndex, onOpen }: {
+/* ─── Gallery item ──────────────────────────────────────────────────────── */
+function GalleryItem({
+  image, index, onOpen, className = '', style,
+}: {
   image: typeof galleryImages[0];
-  globalIndex: number;
-  onOpen: (index: number) => void;
+  index: number;
+  onOpen: (i: number) => void;
+  className?: string;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
+  const inView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={inView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.5, delay: globalIndex * 0.07 }}
-      className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-sky-500/15 transition-all duration-500"
-      onClick={() => onOpen(globalIndex)}
+      className={`relative group cursor-pointer overflow-hidden rounded-2xl bg-slate-100 dark:bg-navy-700 ${className}`}
+      style={style}
+      initial={{ opacity: 0, y: 16 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.06 }}
+      onClick={() => onOpen(index)}
+      whileHover={{ scale: 1.01 }}
     >
-      <div className="relative w-full h-full min-h-[160px]">
-        <img
-          src={image.src}
-          alt={image.alt}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          loading="lazy"
-        />
+      <img
+        src={image.src}
+        alt={image.alt}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+      {/* Hover overlay */}
+      <div className="absolute inset-0 bg-navy-900/0 group-hover:bg-navy-900/40 transition-colors duration-300" />
 
-        {/* Description glassmorphism */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 p-4 glass border-0 border-t border-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-400"
-        >
-          <p className="text-white text-xs font-semibold truncate">{image.alt}</p>
-          <p className="text-white/70 text-xs truncate">{image.description}</p>
-        </motion.div>
-
-        {/* Zoom icon */}
-        <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <ZoomIn size={14} className="text-white" />
-        </div>
-
-        {/* View button */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <motion.button
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white text-xs font-semibold hover:bg-white/30 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ZoomIn size={13} />
-            Voir
-          </motion.button>
+      {/* View button — appears on hover */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 dark:bg-white/20 dark:backdrop-blur-sm text-slate-800 dark:text-white text-xs font-semibold shadow-lg">
+          <ZoomIn size={13} />
+          Voir
         </div>
       </div>
     </motion.div>
   );
 }
 
+/* ─── Main component ─────────────────────────────────────────────────────── */
 export default function Gallery() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const titleInView = useInView(titleRef, { once: true });
 
-  const openLightbox = (index: number) => setLightboxIndex(index);
+  const openLightbox = (i: number) => setLightboxIndex(i);
   const closeLightbox = () => setLightboxIndex(null);
   const prevImage = () => setLightboxIndex(i => i !== null ? (i - 1 + galleryImages.length) % galleryImages.length : 0);
   const nextImage = () => setLightboxIndex(i => i !== null ? (i + 1) % galleryImages.length : 0);
 
-  // Build flat list tracking global indices per row
-  let globalCounter = 0;
-  const rowItems = rows.map(row => row.map(() => globalCounter++));
-  // Reset
-  globalCounter = 0;
-
   return (
-    <section id="galerie" className="relative overflow-hidden" aria-label="Galerie photos">
-      <div className="absolute inset-0 bg-gradient-to-b from-white dark:from-navy-900 via-sky-50/20 dark:via-navy-800/30 to-white dark:to-navy-900 pointer-events-none" />
-
-      <div className="relative z-10 container-max section-padding">
+    <section id="galerie" className="relative overflow-hidden bg-white dark:bg-navy-900" aria-label="Galerie photos">
+      <div className="container-max section-padding">
         {/* Header */}
         <motion.div
           ref={titleRef}
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
+          className="mb-12"
+          initial={{ opacity: 0, y: 24 }}
           animate={titleInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
         >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs font-semibold tracking-widest uppercase mb-4">
-            <Camera size={12} />
-            Photos
+          <span className="inline-flex items-center gap-2 text-sky-500 dark:text-sky-400 text-xs font-bold tracking-widest uppercase mb-3">
+            <Camera size={13} />
+            Galerie
           </span>
-          <h2 className="section-title text-slate-900 dark:text-white mb-4">
-            Notre{' '}
-            <span className="text-gradient">galerie</span>
+          <h2 className="section-title text-slate-900 dark:text-white mb-3">
+            Nos <span className="text-gradient">moments</span>
           </h2>
-          <p className="section-subtitle max-w-xl mx-auto">
-            Instants capturés de la vie d'EMIFI — prestations, répétitions et moments de partage.
+          <p className="section-subtitle max-w-lg">
+            Prestations, répétitions et instants de partage capturés au fil des années.
           </p>
         </motion.div>
 
-        {/* Masonry Gallery */}
-        <div className="space-y-3">
-          {/* Row 1 — 3 images: wide + 2 stacked */}
-          <div className="grid grid-cols-3 gap-3">
-            {[0, 1, 2].map((imgIdx, i) => (
-              <div
-                key={imgIdx}
-                className={i === 0 ? 'col-span-1 row-span-2' : 'col-span-1'}
-                style={{ height: i === 0 ? '400px' : '190px' }}
-              >
-                <div className="h-full">
-                  <GalleryItem image={galleryImages[imgIdx]} globalIndex={imgIdx} onOpen={openLightbox} />
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* ── Row 1 : 1 big left + 1 tall right ─────────────────────────── */}
+        <div className="grid grid-cols-3 gap-3 mb-3">
+          {/* Big image — spans 2 cols */}
+          <GalleryItem
+            image={galleryImages[0]}
+            index={0}
+            onOpen={openLightbox}
+            className="col-span-2"
+            style={{ height: '340px' }}
+          />
+          {/* Tall right image */}
+          <GalleryItem
+            image={galleryImages[1]}
+            index={1}
+            onOpen={openLightbox}
+            className="col-span-1"
+            style={{ height: '340px' }}
+          />
+        </div>
 
-          {/* Row 2 — 4 images: wide + 3 equal */}
-          <div className="grid grid-cols-4 gap-3" style={{ height: '260px' }}>
-            {[3, 4, 5, 6].map((imgIdx, i) => (
-              <div key={imgIdx} className={i === 0 ? 'col-span-2 h-full' : 'col-span-1 h-full'}>
-                <GalleryItem image={galleryImages[imgIdx]} globalIndex={imgIdx} onOpen={openLightbox} />
-              </div>
-            ))}
-          </div>
+        {/* ── Row 2 : 3 equal ────────────────────────────────────────────── */}
+        <div className="grid grid-cols-3 gap-3 mb-3">
+          {[2, 3, 4].map((imgIdx, i) => (
+            <GalleryItem
+              key={imgIdx}
+              image={galleryImages[imgIdx]}
+              index={imgIdx}
+              onOpen={openLightbox}
+              style={{ height: '220px' }}
+            />
+          ))}
+        </div>
 
-          {/* Row 3 — 3 images: 2 equal + wide */}
-          <div className="grid grid-cols-3 gap-3" style={{ height: '240px' }}>
-            {[7, 8, 9].map((imgIdx, i) => (
-              <div key={imgIdx} className={i === 2 ? 'col-span-2 h-full' : 'col-span-1 h-full'}>
-                <GalleryItem image={galleryImages[imgIdx]} globalIndex={imgIdx} onOpen={openLightbox} />
-              </div>
-            ))}
-          </div>
+        {/* ── Row 3 : 1 left + 1 big right ──────────────────────────────── */}
+        <div className="grid grid-cols-3 gap-3 mb-3">
+          <GalleryItem
+            image={galleryImages[5]}
+            index={5}
+            onOpen={openLightbox}
+            className="col-span-1"
+            style={{ height: '280px' }}
+          />
+          <GalleryItem
+            image={galleryImages[6]}
+            index={6}
+            onOpen={openLightbox}
+            className="col-span-2"
+            style={{ height: '280px' }}
+          />
+        </div>
+
+        {/* ── Row 4 : 4 equal small ──────────────────────────────────────── */}
+        <div className="grid grid-cols-4 gap-3">
+          {[7, 8, 9, 0].map((imgIdx, i) => (
+            <GalleryItem
+              key={`r4-${imgIdx}`}
+              image={galleryImages[imgIdx]}
+              index={imgIdx}
+              onOpen={openLightbox}
+              style={{ height: '160px' }}
+            />
+          ))}
         </div>
       </div>
 
