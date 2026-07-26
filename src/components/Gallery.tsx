@@ -164,7 +164,7 @@ export default function Gallery() {
             index={0}
             onOpen={openLightbox}
             className="col-span-2"
-            style={{ height: '340px' }}
+            style={{ height: 'clamp(160px, 42vw, 340px)' }}
           />
           {/* Tall right image */}
           <GalleryItem
@@ -172,7 +172,7 @@ export default function Gallery() {
             index={1}
             onOpen={openLightbox}
             className="col-span-1"
-            style={{ height: '340px' }}
+            style={{ height: 'clamp(160px, 42vw, 340px)' }}
           />
         </div>
 
@@ -184,7 +184,7 @@ export default function Gallery() {
               image={galleryImages[imgIdx]}
               index={imgIdx}
               onOpen={openLightbox}
-              style={{ height: '220px' }}
+              style={{ height: 'clamp(110px, 30vw, 220px)' }}
             />
           ))}
         </div>
@@ -196,14 +196,14 @@ export default function Gallery() {
             index={5}
             onOpen={openLightbox}
             className="col-span-1"
-            style={{ height: '280px' }}
+            style={{ height: 'clamp(140px, 36vw, 280px)' }}
           />
           <GalleryItem
             image={galleryImages[6]}
             index={6}
             onOpen={openLightbox}
             className="col-span-2"
-            style={{ height: '280px' }}
+            style={{ height: 'clamp(140px, 36vw, 280px)' }}
           />
         </div>
 
@@ -215,7 +215,7 @@ export default function Gallery() {
               image={galleryImages[imgIdx]}
               index={imgIdx}
               onOpen={openLightbox}
-              style={{ height: '160px' }}
+              style={{ height: 'clamp(80px, 22vw, 160px)' }}
             />
           ))}
         </div>

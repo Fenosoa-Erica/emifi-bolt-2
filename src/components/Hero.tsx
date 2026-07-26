@@ -7,19 +7,50 @@ const stats = [
   { icon: Music, value: '+100', label: 'Anciens membres' },
 ];
 
-const Particle = ({ x, y, delay }: { x: number; y: number; delay: number }) => (
-  <motion.div
-    className="absolute w-1 h-1 rounded-full bg-sky-400/60"
-    style={{ left: `${x}%`, top: `${y}%` }}
-    animate={{ y: [-10, 10, -10], opacity: [0.3, 0.8, 0.3] }}
-    transition={{ duration: 4 + delay, repeat: Infinity, delay }}
-  />
-);
+const NOTE_GLYPHS = ['♩', '♪', '♫', '♬', '𝄞'];
 
-const particles = [
-  { x: 10, y: 20 }, { x: 85, y: 15 }, { x: 70, y: 70 }, { x: 25, y: 80 },
-  { x: 50, y: 10 }, { x: 90, y: 50 }, { x: 15, y: 55 }, { x: 60, y: 90 },
+interface NoteParticle {
+  x: number;
+  y: number;
+  glyph: string;
+  size: number;
+  delay: number;
+  duration: number;
+  drift: number;
+  rotate: number;
+}
+
+const particles: NoteParticle[] = [
+  { x: 8,  y: 18, glyph: '♪',  size: 22, delay: 0,    duration: 5.2, drift: 14, rotate: 12 },
+  { x: 88, y: 12, glyph: '♫',  size: 28, delay: 0.6,  duration: 6.0, drift: -16, rotate: -14 },
+  { x: 72, y: 72, glyph: '♩',  size: 24, delay: 1.1,  duration: 5.6, drift: 12, rotate: 10 },
+  { x: 22, y: 82, glyph: '♬',  size: 20, delay: 0.4,  duration: 4.8, drift: -10, rotate: -8 },
+  { x: 48, y: 8,  glyph: '𝄞',  size: 30, delay: 0.9,  duration: 6.4, drift: 16, rotate: 16 },
+  { x: 92, y: 48, glyph: '♪',  size: 18, delay: 1.6,  duration: 5.0, drift: -12, rotate: -18 },
+  { x: 12, y: 52, glyph: '♫',  size: 26, delay: 0.7,  duration: 6.2, drift: 14, rotate: 20 },
+  { x: 62, y: 90, glyph: '♩',  size: 22, delay: 2.0,  duration: 4.6, drift: -14, rotate: -10 },
+  { x: 35, y: 28, glyph: '♬',  size: 20, delay: 1.8,  duration: 5.4, drift: 12, rotate: 8 },
+  { x: 80, y: 30, glyph: '♪',  size: 24, delay: 1.3,  duration: 5.8, drift: -16, rotate: -22 },
+  { x: 5,  y: 75, glyph: '𝄞',  size: 18, delay: 2.3,  duration: 5.0, drift: 10, rotate: 14 },
+  { x: 55, y: 55, glyph: '♫',  size: 16, delay: 1.5,  duration: 4.4, drift: -12, rotate: -16 },
 ];
+
+const Note = ({ p }: { p: NoteParticle }) => (
+  <motion.div
+    className="absolute text-sky-300/40 select-none pointer-events-none"
+    style={{ left: `${p.x}%`, top: `${p.y}%`, fontSize: `${p.size}px` }}
+    animate={{
+      y: [-12, 12, -12],
+      x: [0, p.drift, 0],
+      rotate: [0, p.rotate, 0],
+      opacity: [0.15, 0.55, 0.15],
+      scale: [1, 1.15, 1],
+    }}
+    transition={{ duration: p.duration, repeat: Infinity, delay: p.delay, ease: 'easeInOut' }}
+  >
+    {p.glyph}
+  </motion.div>
+);
 
 export default function Hero() {
   const scrollToAbout = () => {
@@ -47,10 +78,10 @@ export default function Hero() {
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-sky-900/20 to-transparent" />
       </div>
 
-      {/* Particles */}
+      {/* Floating music notes */}
       <div className="absolute inset-0 z-10 pointer-events-none">
         {particles.map((p, i) => (
-          <Particle key={i} x={p.x} y={p.y} delay={i * 0.5} />
+          <Note key={i} p={p} />
         ))}
         {/* Abstract circles */}
         <motion.div
@@ -69,7 +100,7 @@ export default function Hero() {
       <div className="relative z-20 container-max section-padding w-full">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left column */}
-          <div className="space-y-8">
+          <div className="space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start">
             {/* Badge */}
             <motion.div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-sky-400/30 text-sky-300 text-xs font-medium tracking-widest uppercase"
@@ -114,19 +145,19 @@ export default function Hero() {
 
             {/* Stats */}
             <motion.div
-              className="flex flex-wrap gap-4"
+              className="flex flex-row gap-3 sm:gap-4 justify-center lg:justify-start w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.5 }}
             >
               {stats.map(({ icon: Icon, value, label }) => (
-                <div key={label} className="flex items-center gap-3 glass rounded-2xl px-5 py-3.5 border border-white/10">
-                  <div className="w-9 h-9 rounded-xl bg-sky-400/20 flex items-center justify-center">
+                <div key={label} className="flex-1 max-w-[200px] flex items-center gap-2.5 glass rounded-2xl px-3.5 py-3 border border-white/10">
+                  <div className="w-9 h-9 rounded-xl bg-sky-400/20 flex items-center justify-center flex-shrink-0">
                     <Icon size={16} className="text-sky-400" />
                   </div>
-                  <div>
-                    <div className="text-white font-bold text-lg leading-none">{value}</div>
-                    <div className="text-white/50 text-xs mt-0.5">{label}</div>
+                  <div className="min-w-0">
+                    <div className="text-white font-bold text-base sm:text-lg leading-none">{value}</div>
+                    <div className="text-white/50 text-[10px] sm:text-xs mt-0.5 truncate">{label}</div>
                   </div>
                 </div>
               ))}

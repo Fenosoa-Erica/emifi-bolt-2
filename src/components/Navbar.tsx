@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Search, Music2, Loader2 } from 'lucide-react';
 import { useScrollPosition } from '@/hooks/useScrollPosition';
 import { useTheme } from '@/contexts/ThemeContext';
-import { songs } from '@/data';
+import assetManifest from 'virtual:emifi-assets';
+
+const lyricsList = assetManifest.lyrics;
 
 const navLinks = [
   { label: 'Accueil', href: '#accueil' },
@@ -14,24 +16,24 @@ const navLinks = [
 ];
 
 /* ─── Lyrics Modal — fetches content from public/assets/lyrics/*.txt ──────── */
-function LyricsModal({ songId, onClose }: { songId: string; onClose: () => void }) {
-  const song = songs.find(s => s.id === songId);
+function LyricsModal({ lyricsId, onClose }: { lyricsId: string; onClose: () => void }) {
+  const item = lyricsList.find(l => l.id === lyricsId);
   const [text, setText]       = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState(false);
 
   useEffect(() => {
-    if (!song) return;
+    if (!item) return;
     setLoading(true);
     setError(false);
-    fetch(`/assets/lyrics/${song.lyricsFile}`)
+    fetch(item.file)
       .then(r => {
         if (!r.ok) throw new Error('not found');
         return r.text();
       })
       .then(t => { setText(t); setLoading(false); })
       .catch(() => { setError(true); setLoading(false); });
-  }, [song]);
+  }, [item]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -39,7 +41,7 @@ function LyricsModal({ songId, onClose }: { songId: string; onClose: () => void 
     return () => document.removeEventListener('keydown', handler);
   }, [onClose]);
 
-  if (!song) return null;
+  if (!item) return null;
 
   return (
     <motion.div
@@ -63,8 +65,8 @@ function LyricsModal({ songId, onClose }: { songId: string; onClose: () => void 
             <Music2 size={18} className="text-sky-500" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-slate-900 dark:text-white font-bold text-base truncate">{song.title}</h3>
-            <p className="text-slate-500 dark:text-slate-400 text-xs">{song.album}</p>
+            <h3 className="text-slate-900 dark:text-white font-bold text-base truncate">{item.name}</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-xs">Paroles</p>
           </div>
           <button
             onClick={onClose}
@@ -102,7 +104,7 @@ function LyricsModal({ songId, onClose }: { songId: string; onClose: () => void 
 function SearchResults({
   results, query, onSelect,
 }: {
-  results: typeof songs;
+  results: typeof lyricsList;
   query: string;
   onSelect: (id: string) => void;
 }) {
@@ -122,18 +124,18 @@ function SearchResults({
               {results.length} résultat{results.length > 1 ? 's' : ''}
             </p>
           </div>
-          {results.map(song => (
+          {results.map(item => (
             <button
-              key={song.id}
-              onClick={() => onSelect(song.id)}
+              key={item.id}
+              onClick={() => onSelect(item.id)}
               className="w-full flex items-center gap-3 px-4 py-3 hover:bg-sky-50 dark:hover:bg-navy-700 transition-colors text-left"
             >
               <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-900/30 flex items-center justify-center flex-shrink-0">
                 <Music2 size={13} className="text-sky-500" />
               </div>
               <div className="min-w-0">
-                <p className="text-slate-800 dark:text-white text-sm font-semibold truncate">{song.title}</p>
-                <p className="text-slate-400 dark:text-slate-500 text-xs truncate">{song.album}</p>
+                <p className="text-slate-800 dark:text-white text-sm font-semibold truncate">{item.name}</p>
+                <p className="text-slate-400 dark:text-slate-500 text-xs truncate">Paroles</p>
               </div>
             </button>
           ))}
@@ -164,7 +166,7 @@ function DesktopSearchBar({
   const wrapperRef        = useRef<HTMLDivElement>(null);
 
   const results = query.trim().length > 0
-    ? songs.filter(s => s.title.toLowerCase().includes(query.toLowerCase()))
+    ? lyricsList.filter(l => l.name.toLowerCase().includes(query.toLowerCase()))
     : [];
 
   useEffect(() => {
@@ -221,7 +223,7 @@ function MobileSearchSection({ onOpenLyrics }: { onOpenLyrics: (id: string) => v
   const wrapperRef        = useRef<HTMLDivElement>(null);
 
   const results = query.trim().length > 0
-    ? songs.filter(s => s.title.toLowerCase().includes(query.toLowerCase()))
+    ? lyricsList.filter(l => l.name.toLowerCase().includes(query.toLowerCase()))
     : [];
 
   useEffect(() => {
@@ -269,7 +271,7 @@ function MobileSearchSection({ onOpenLyrics }: { onOpenLyrics: (id: string) => v
 export default function Navbar() {
   const scrollY               = useScrollPosition();
   const [menuOpen, setMenuOpen]       = useState(false);
-  const [lyricsSong, setLyricsSong]   = useState<string | null>(null);
+  const [lyricsId, setLyricsId]     = useState<string | null>(null);
   const { theme, toggleTheme }        = useTheme();
   const isScrolled                    = scrollY > 40;
 
@@ -337,7 +339,7 @@ export default function Navbar() {
             {/* Right controls */}
             <div className="flex items-center gap-2">
               {/* Desktop search */}
-              <DesktopSearchBar isScrolled={isScrolled} onOpenLyrics={setLyricsSong} />
+              <DesktopSearchBar isScrolled={isScrolled} onOpenLyrics={setLyricsId} />
 
               {/* Theme toggle */}
               <motion.button
@@ -406,7 +408,7 @@ export default function Navbar() {
                 <p className="px-6 text-[10px] font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-2">
                   Rechercher les paroles
                 </p>
-                <MobileSearchSection onOpenLyrics={id => { setLyricsSong(id); setMenuOpen(false); }} />
+                <MobileSearchSection onOpenLyrics={id => { setLyricsId(id); setMenuOpen(false); }} />
               </div>
 
               {/* Nav links */}
@@ -443,8 +445,8 @@ export default function Navbar() {
 
       {/* ── Lyrics modal (shared by desktop + mobile) ─────────────────── */}
       <AnimatePresence>
-        {lyricsSong && (
-          <LyricsModal songId={lyricsSong} onClose={() => setLyricsSong(null)} />
+        {lyricsId && (
+          <LyricsModal lyricsId={lyricsId} onClose={() => setLyricsId(null)} />
         )}
       </AnimatePresence>
     </>

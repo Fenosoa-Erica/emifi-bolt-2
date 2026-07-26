@@ -94,8 +94,7 @@ export default function About() {
 
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Left column */}
-          <div className="space-y-10">
-            {/* Who we are */}
+          <div className="space-y-10">            {/* Who we are */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

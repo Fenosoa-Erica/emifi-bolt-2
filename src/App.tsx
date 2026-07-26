@@ -3,6 +3,8 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import ScrollToTop from '@/components/ScrollToTop';
+import LoadingScreen from '@/components/LoadingScreen';
+import CustomCursor from '@/components/CustomCursor';
 
 const About = lazy(() => import('@/components/About'));
 const Realisations = lazy(() => import('@/components/Realisations'));
@@ -21,6 +23,8 @@ function SectionLoader() {
 function AppContent() {
   return (
     <div className="min-h-screen bg-white dark:bg-navy-900 antialiased">
+      <CustomCursor />
+      <LoadingScreen />
       <Navbar />
       <main>
         <Hero />

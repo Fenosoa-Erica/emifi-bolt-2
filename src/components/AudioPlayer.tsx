@@ -4,7 +4,25 @@ import {
   Play, Pause, SkipBack, SkipForward, Heart,
   Shuffle, Repeat, Volume2, VolumeX, List, ChevronDown, Loader2,
 } from 'lucide-react';
-import { songs } from '@/data';
+import assetManifest from 'virtual:emifi-assets';
+
+interface PlayerSong {
+  id: string;
+  title: string;
+  album: string;
+  duration: string;
+  coverUrl: string;
+  src: string;
+}
+
+const songs: PlayerSong[] = assetManifest.songs.map((s) => ({
+  id: s.id,
+  title: s.name,
+  album: 'EMIFI',
+  duration: '—:—',
+  coverUrl: '/assets/images/bg.jpg',
+  src: s.src,
+}));
 
 export default function AudioPlayer() {
   const [currentIndex, setCurrentIndex] = useState(0);
