@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle, AlertCircle, Loader2, Mail, MapPin, Phone, Facebook, Youtube } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface FormData {
   name: string;
@@ -15,9 +16,9 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 const initialForm: FormData = { name: '', phone: '', email: '', subject: '', message: '' };
 
 const infoItems = [
-  { icon: Mail,   label: 'Email',    value: 'emitmikalo@gmail.com' },
-  { icon: Phone,  label: 'Téléphone', value: 'À compléter' },
-  { icon: MapPin, label: 'Adresse',  value: 'EMIT – Université de Fianarantsoa, Madagascar' },
+  { icon: Mail,   labelKey: 'Email' as const,             value: 'emitmikalo@gmail.com' },
+  { icon: Phone,  labelKey: 'cont_tel_label' as const,    value: '+261 34 18 924 33' },
+  { icon: MapPin, labelKey: 'cont_addr_label' as const,   value: 'EMIT – Université de Fianarantsoa, Madagascar' },
 ];
 
 export default function Contact() {
@@ -27,15 +28,16 @@ export default function Contact() {
   const [errorMsg, setErrorMsg] = useState('');
   const titleRef   = useRef<HTMLDivElement>(null);
   const titleInView = useInView(titleRef, { once: true });
+  const { t } = useLanguage();
 
   const validate = (): boolean => {
     const e: Partial<FormData> = {};
-    if (!form.name.trim())    e.name    = 'Le nom est requis.';
-    if (!form.subject.trim()) e.subject = "L'objet est requis.";
-    if (!form.message.trim()) e.message = 'Le message est requis.';
+    if (!form.name.trim())    e.name    = t('err_name');
+    if (!form.subject.trim()) e.subject = t('err_subject');
+    if (!form.message.trim()) e.message = t('err_message');
     if (!form.phone.trim() && !form.email.trim()) {
-      e.phone = 'Téléphone ou email requis.';
-      e.email = 'Téléphone ou email requis.';
+      e.phone = t('err_contact_req');
+      e.email = t('err_contact_req');
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -58,13 +60,13 @@ export default function Contact() {
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || "Erreur lors de l'envoi.");
+        throw new Error(body.error || t('err_message'));
       }
       setStatus('success');
       setForm(initialForm);
     } catch (err) {
       setStatus('error');
-      setErrorMsg(err instanceof Error ? err.message : 'Une erreur est survenue.');
+      setErrorMsg(err instanceof Error ? err.message : t('err_message'));
     }
   };
 
@@ -105,13 +107,13 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 dark:bg-sky-400/10 border border-sky-300 dark:border-sky-400/20 text-sky-600 dark:text-sky-400 text-xs font-bold tracking-widest uppercase mb-4">
-            Nous rejoindre
+            {t('cont_badge')}
           </span>
           <h2 className="section-title text-slate-900 dark:text-white mb-3">
-            Nous <span className="text-gradient">contacter</span>
+            {t('cont_title_pre')} <span className="text-gradient">{t('cont_title')}</span>
           </h2>
           <p className="section-subtitle text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            Une question, une collaboration ou envie de rejoindre EMIFI ? Écrivez-nous.
+            {t('cont_sub')}
           </p>
         </motion.div>
 
@@ -138,10 +140,10 @@ export default function Contact() {
                     <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-400/15 border border-green-300 dark:border-green-400/30 flex items-center justify-center">
                       <CheckCircle size={30} className="text-green-500 dark:text-green-400" />
                     </div>
-                    <h3 className="text-slate-900 dark:text-white font-bold text-xl">Message envoyé !</h3>
-                    <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs">Nous vous répondrons dans les plus brefs délais.</p>
+                    <h3 className="text-slate-900 dark:text-white font-bold text-xl">{t('cont_ok_title')}</h3>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs">{t('cont_ok_text')}</p>
                     <button onClick={() => setStatus('idle')} className="btn-primary mt-2">
-                      Nouveau message
+                      {t('cont_new')}
                     </button>
                   </motion.div>
                 ) : (
@@ -157,9 +159,9 @@ export default function Contact() {
                     {/* Nom */}
                     <div>
                       <label className="block text-slate-600 dark:text-white/60 text-xs font-semibold tracking-wider uppercase mb-1.5">
-                        Nom <span className="text-sky-500 dark:text-sky-400">*</span>
+                        {t('cont_name')} <span className="text-sky-500 dark:text-sky-400">*</span>
                       </label>
-                      <input type="text" className={inputCls('name')} placeholder="Votre nom complet"
+                      <input type="text" className={inputCls('name')} placeholder={t('cont_name_ph')}
                         value={form.name} onChange={e => handleChange('name', e.target.value)} />
                       {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                     </div>
@@ -168,8 +170,8 @@ export default function Contact() {
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-slate-600 dark:text-white/60 text-xs font-semibold tracking-wider uppercase mb-1.5">
-                          Téléphone
-                          <span className="text-slate-400 dark:text-white/30 normal-case tracking-normal ml-1">(ou email)</span>
+                          {t('cont_phone')}
+                          <span className="text-slate-400 dark:text-white/30 normal-case tracking-normal ml-1">{t('cont_email_hint')}</span>
                         </label>
                         <input type="tel" className={inputCls('phone')} placeholder="+261 34 ..."
                           value={form.phone} onChange={e => handleChange('phone', e.target.value)} />
@@ -178,7 +180,7 @@ export default function Contact() {
                       <div>
                         <label className="block text-slate-600 dark:text-white/60 text-xs font-semibold tracking-wider uppercase mb-1.5">
                           Email
-                          <span className="text-slate-400 dark:text-white/30 normal-case tracking-normal ml-1">(ou tél.)</span>
+                          <span className="text-slate-400 dark:text-white/30 normal-case tracking-normal ml-1">{t('cont_phone_hint')}</span>
                         </label>
                         <input type="email" className={inputCls('email')} placeholder="votre@email.com"
                           value={form.email} onChange={e => handleChange('email', e.target.value)} />
@@ -189,9 +191,9 @@ export default function Contact() {
                     {/* Objet */}
                     <div>
                       <label className="block text-slate-600 dark:text-white/60 text-xs font-semibold tracking-wider uppercase mb-1.5">
-                        Objet <span className="text-sky-500 dark:text-sky-400">*</span>
+                        {t('cont_subject')} <span className="text-sky-500 dark:text-sky-400">*</span>
                       </label>
-                      <input type="text" className={inputCls('subject')} placeholder="Sujet de votre message"
+                      <input type="text" className={inputCls('subject')} placeholder={t('cont_subject_ph')}
                         value={form.subject} onChange={e => handleChange('subject', e.target.value)} />
                       {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
                     </div>
@@ -199,10 +201,10 @@ export default function Contact() {
                     {/* Message */}
                     <div>
                       <label className="block text-slate-600 dark:text-white/60 text-xs font-semibold tracking-wider uppercase mb-1.5">
-                        Message <span className="text-sky-500 dark:text-sky-400">*</span>
+                        {t('cont_message')} <span className="text-sky-500 dark:text-sky-400">*</span>
                       </label>
                       <textarea rows={5} className={`${inputCls('message')} resize-none`}
-                        placeholder="Votre message..."
+                        placeholder={t('cont_message_ph')}
                         value={form.message} onChange={e => handleChange('message', e.target.value)} />
                       {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                     </div>
@@ -220,8 +222,8 @@ export default function Contact() {
                       whileTap={{ scale: status === 'loading' ? 1 : 0.98 }}
                     >
                       {status === 'loading'
-                        ? <><Loader2 size={16} className="animate-spin" /> Envoi en cours...</>
-                        : <><Send size={15} /> Envoyer le message</>
+                        ? <><Loader2 size={16} className="animate-spin" /> {t('cont_sending')}</>
+                        : <><Send size={15} /> {t('cont_send')}</>
                       }
                     </motion.button>
                   </motion.form>
@@ -240,16 +242,16 @@ export default function Contact() {
           >
             {/* Informations card */}
             <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-xl p-6 shadow-sm dark:shadow-none">
-              <h3 className="text-slate-900 dark:text-white font-bold text-lg mb-5">Informations</h3>
+              <h3 className="text-slate-900 dark:text-white font-bold text-lg mb-5">{t('cont_info')}</h3>
               <div className="space-y-4">
-                {infoItems.map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="flex items-start gap-3.5">
+                {infoItems.map(({ icon: Icon, labelKey, value }) => (
+                  <div key={labelKey} className="flex items-start gap-3.5">
                     <div className="w-9 h-9 rounded-xl bg-sky-100 dark:bg-sky-400/15 border border-sky-200 dark:border-sky-400/20 flex items-center justify-center flex-shrink-0">
                       <Icon size={15} className="text-sky-500 dark:text-sky-400" />
                     </div>
                     <div>
                       <p className="text-slate-400 dark:text-white/40 text-[10px] font-bold tracking-widest uppercase mb-0.5">
-                        {label}
+                        {labelKey === 'Email' ? 'Email' : t(labelKey as any)}
                       </p>
                       <p className="text-slate-800 dark:text-white text-sm leading-snug">{value}</p>
                     </div>
@@ -275,7 +277,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-blue-800 dark:text-white font-semibold text-sm">Facebook</p>
-                  <p className="text-blue-500 dark:text-white/40 text-xs">Suivez-nous</p>
+                  <p className="text-blue-500 dark:text-white/40 text-xs">{t('cont_fb_follow')}</p>
                 </div>
               </motion.a>
 
@@ -294,7 +296,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-red-800 dark:text-white font-semibold text-sm">YouTube</p>
-                  <p className="text-red-500 dark:text-white/40 text-xs">Clips & prestations</p>
+                  <p className="text-red-500 dark:text-white/40 text-xs">{t('cont_yt_label')}</p>
                 </div>
               </motion.a>
             </div>

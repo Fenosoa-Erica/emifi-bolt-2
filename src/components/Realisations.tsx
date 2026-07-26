@@ -2,11 +2,13 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Music, Calendar, ChevronDown, ChevronUp, Play, ExternalLink, Youtube, Facebook } from 'lucide-react';
 import { albums, clips } from '@/data';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 function AlbumCard({ album, index }: { album: typeof albums[0]; index: number }) {
   const [expanded, setExpanded] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
+  const { t } = useLanguage();
 
   return (
     <motion.div
@@ -47,7 +49,7 @@ function AlbumCard({ album, index }: { album: typeof albums[0]; index: number })
             <h3 className="font-sans font-bold text-slate-900 dark:text-white text-lg leading-tight">{album.title}</h3>
             <div className="flex items-center gap-3 mt-1.5 text-slate-500 dark:text-slate-400 text-xs">
               <span className="flex items-center gap-1"><Calendar size={11} /> {album.year}</span>
-              <span className="flex items-center gap-1"><Music size={11} /> {album.songsCount} chansons</span>
+              <span className="flex items-center gap-1"><Music size={11} /> {album.songsCount} {t('real_songs_unit')}</span>
             </div>
           </div>
         </div>
@@ -59,7 +61,7 @@ function AlbumCard({ album, index }: { album: typeof albums[0]; index: number })
           whileTap={{ scale: 0.97 }}
           className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 text-xs font-semibold hover:bg-sky-100 dark:hover:bg-sky-900/30 transition-colors"
         >
-          <span>Voir les chansons</span>
+          <span>{t('real_see_songs')}</span>
           <motion.div animate={{ rotate: expanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
             <ChevronDown size={14} />
           </motion.div>
@@ -101,6 +103,7 @@ function AlbumCard({ album, index }: { album: typeof albums[0]; index: number })
 function ClipCard({ clip, index }: { clip: typeof clips[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
+  const { t } = useLanguage();
 
   return (
     <motion.div
@@ -150,7 +153,7 @@ function ClipCard({ clip, index }: { clip: typeof clips[0]; index: number }) {
           whileTap={{ scale: 0.95 }}
           className="self-start flex items-center gap-1.5 px-3 py-2 rounded-xl bg-sky-50 dark:bg-sky-900/20 text-sky-600 dark:text-sky-400 text-xs font-semibold hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors"
         >
-          <span>Regarder</span>
+          <span>{t('real_watch')}</span>
           <ExternalLink size={11} />
         </motion.a>
       </div>
@@ -161,6 +164,7 @@ function ClipCard({ clip, index }: { clip: typeof clips[0]; index: number }) {
 export default function Realisations() {
   const titleRef = useRef<HTMLDivElement>(null);
   const titleInView = useInView(titleRef, { once: true });
+  const { t } = useLanguage();
 
   return (
     <section
@@ -184,14 +188,14 @@ export default function Realisations() {
           transition={{ duration: 0.7 }}
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs font-semibold tracking-widest uppercase mb-4">
-            Discographie & Médias
+            {t('real_badge')}
           </span>
           <h2 className="section-title text-slate-900 dark:text-white mb-4">
-            Nos{' '}
-            <span className="text-gradient">réalisations</span>
+            {t('real_title_pre')}{' '}
+            <span className="text-gradient">{t('real_title')}</span>
           </h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            Albums enregistrés, clips officiels et prestations mémorables.
+            {t('real_sub')}
           </p>
         </motion.div>
 
@@ -207,7 +211,7 @@ export default function Realisations() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
               <Music size={16} className="text-white" />
             </div>
-            Albums
+            {t('real_albums')}
           </motion.h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
             {albums.map((album, i) => (
@@ -228,7 +232,7 @@ export default function Realisations() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
               <Play size={16} className="text-white" />
             </div>
-            Clips officiels
+            {t('real_clips')}
           </motion.h3>
           <div className="grid sm:grid-cols-2 gap-4">
             {clips.map((clip, i) => (

@@ -3,17 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Search, Music2, Loader2 } from 'lucide-react';
 import { useScrollPosition } from '@/hooks/useScrollPosition';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import assetManifest from 'virtual:emifi-assets';
 
 const lyricsList = assetManifest.lyrics;
 
-const navLinks = [
-  { label: 'Accueil', href: '#accueil' },
-  { label: 'À propos', href: '#apropos' },
-  { label: 'Réalisations', href: '#realisations' },
-  { label: 'Galerie', href: '#galerie' },
-  { label: 'Contact', href: '#contact' },
-];
+/* ─── Nav links (labels translated) ──────────────────────────────────────── */
+const navLinkKeys = [
+  { key: 'nav_accueil',      href: '#accueil' },
+  { key: 'nav_apropos',      href: '#apropos' },
+  { key: 'nav_realisations', href: '#realisations' },
+  { key: 'nav_galerie',      href: '#galerie' },
+  { key: 'nav_contact',      href: '#contact' },
+] as const;
 
 /* ─── Lyrics Modal — fetches content from public/assets/lyrics/*.txt ──────── */
 function LyricsModal({ lyricsId, onClose }: { lyricsId: string; onClose: () => void }) {
@@ -86,7 +88,7 @@ function LyricsModal({ lyricsId, onClose }: { lyricsId: string; onClose: () => v
           )}
           {error && !loading && (
             <p className="text-center text-slate-400 dark:text-slate-500 text-sm py-10">
-              Paroles non disponibles.
+              {t('lyrics_none')}
             </p>
           )}
           {!loading && !error && (
@@ -161,6 +163,7 @@ function DesktopSearchBar({
   isScrolled: boolean;
   onOpenLyrics: (id: string) => void;
 }) {
+  const { t } = useLanguage();
   const [query, setQuery] = useState('');
   const [open, setOpen]   = useState(false);
   const wrapperRef        = useRef<HTMLDivElement>(null);
@@ -194,9 +197,9 @@ function DesktopSearchBar({
           value={query}
           onChange={e => { setQuery(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
-          placeholder="Chercher une chanson..."
+          placeholder={t('search_ph')}
           className={`bg-transparent outline-none text-xs w-36 transition-all duration-300 focus:w-44 ${textColor}`}
-          aria-label="Rechercher une chanson"
+          aria-label={t('search_ph')}
         />
         {query && (
           <button onClick={() => { setQuery(''); setOpen(false); }} className={`${iconColor} hover:opacity-80`}>
@@ -218,6 +221,7 @@ function DesktopSearchBar({
 
 /* ─── Mobile search section (inside menu drawer) ───────────────────────── */
 function MobileSearchSection({ onOpenLyrics }: { onOpenLyrics: (id: string) => void }) {
+  const { t } = useLanguage();
   const [query, setQuery] = useState('');
   const [open, setOpen]   = useState(false);
   const wrapperRef        = useRef<HTMLDivElement>(null);
@@ -243,9 +247,9 @@ function MobileSearchSection({ onOpenLyrics }: { onOpenLyrics: (id: string) => v
           value={query}
           onChange={e => { setQuery(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
-          placeholder="Chercher les paroles..."
+          placeholder={t('search_ph')}
           className="bg-transparent outline-none text-sm flex-1 text-slate-700 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-          aria-label="Rechercher une chanson"
+          aria-label={t('search_ph')}
         />
         {query && (
           <button onClick={() => { setQuery(''); setOpen(false); }} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
@@ -273,6 +277,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen]       = useState(false);
   const [lyricsId, setLyricsId]     = useState<string | null>(null);
   const { theme, toggleTheme }        = useTheme();
+  const { lang, toggleLang, t }        = useLanguage();
   const isScrolled                    = scrollY > 40;
 
   useEffect(() => {
@@ -316,7 +321,7 @@ export default function Navbar() {
 
             {/* Desktop Nav links */}
             <nav className="hidden lg:flex items-center gap-1">
-              {navLinks.map(link => (
+              {navLinkKeys.map(link => (
                 <motion.a
                   key={link.href}
                   href={link.href}
@@ -328,7 +333,7 @@ export default function Navbar() {
                   }`}
                   whileHover={{ scale: 1.05 }}
                 >
-                  <span className="relative z-10">{link.label}</span>
+                  <span className="relative z-10">{t(link.key)}</span>
                   <span className={`absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                     isScrolled ? 'bg-sky-50 dark:bg-sky-900/30' : 'bg-white/10'
                   }`} />
@@ -341,10 +346,25 @@ export default function Navbar() {
               {/* Desktop search */}
               <DesktopSearchBar isScrolled={isScrolled} onOpenLyrics={setLyricsId} />
 
+              {/* Language toggle */}
+              <motion.button
+                onClick={toggleLang}
+                aria-label="Hizaha teny"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={`flex items-center gap-1.5 px-2.5 py-2 rounded-full transition-colors duration-200 ${
+                  isScrolled
+                    ? 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-navy-700'
+                    : 'text-white/90 hover:bg-white/10'
+                }`}
+              >
+                <span className="text-xs font-bold uppercase tracking-wide">{lang === 'fr' ? 'FR→MG' : 'MG→FR'}</span>
+              </motion.button>
+
               {/* Theme toggle */}
               <motion.button
                 onClick={toggleTheme}
-                aria-label="Basculer le thème"
+                aria-label={t('theme_dark')}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className={`p-2.5 rounded-full transition-colors duration-200 ${
@@ -406,14 +426,14 @@ export default function Navbar() {
               {/* Search — visible in mobile menu */}
               <div className="py-4 border-b border-slate-100 dark:border-navy-700">
                 <p className="px-6 text-[10px] font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-2">
-                  Rechercher les paroles
+                  {t('search_lyrics_label')}
                 </p>
                 <MobileSearchSection onOpenLyrics={id => { setLyricsId(id); setMenuOpen(false); }} />
               </div>
 
               {/* Nav links */}
               <nav className="flex flex-col gap-1 px-4 py-4 flex-1">
-                {navLinks.map((link, i) => (
+                {navLinkKeys.map((link, i) => (
                   <motion.a
                     key={link.href}
                     href={link.href}
@@ -423,10 +443,20 @@ export default function Navbar() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 + 0.1 }}
                   >
-                    {link.label}
+                    {t(link.key)}
                   </motion.a>
                 ))}
               </nav>
+
+              {/* Language toggle (mobile) */}
+              <div className="px-6 pb-2 flex-shrink-0">
+                <button
+                  onClick={toggleLang}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 dark:border-navy-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors text-sm font-medium"
+                >
+                  {lang === 'fr' ? 'FR→MG' : 'MG→FR'}
+                </button>
+              </div>
 
               {/* Theme toggle */}
               <div className="px-6 pb-8 flex-shrink-0">
@@ -435,7 +465,7 @@ export default function Navbar() {
                   className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 dark:border-navy-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-navy-700 transition-colors text-sm font-medium"
                 >
                   {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-                  {theme === 'light' ? 'Mode sombre' : 'Mode clair'}
+                  {theme === 'light' ? t('theme_dark') : t('theme_light')}
                 </button>
               </div>
             </motion.div>

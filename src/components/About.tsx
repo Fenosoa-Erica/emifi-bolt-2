@@ -1,31 +1,33 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Target, Music4 } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const timelineEvents = [
   {
     date: '19 juin 2018',
-    title: 'Fondation d\'EMIFI',
-    description: 'Création de la chorale par Pr HAJALALAINA Aimé Richard et Pr RAKOTONIRAINY Hasina.',
+    titleKey: 'tl1_title',
+    descKey: 'tl1_desc',
     color: 'sky',
   },
   {
     date: '23 juin 2018',
-    title: 'Festival Harendrina',
-    description: 'Première apparition officielle lors du Festival Harendrina.',
+    titleKey: 'tl2_title',
+    descKey: 'tl2_desc',
     color: 'blue',
   },
   {
     date: '26 septembre 2018',
-    title: 'Première prestation',
-    description: 'Première prestation sur scène au KSLMD Fianarantsoa.',
+    titleKey: 'tl3_title',
+    descKey: 'tl3_desc',
     color: 'navy',
   },
-];
+] as const;
 
 function TimelineItem({ event, index }: { event: typeof timelineEvents[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const { t } = useLanguage();
 
   return (
     <motion.div
@@ -52,8 +54,8 @@ function TimelineItem({ event, index }: { event: typeof timelineEvents[0]; index
         <span className="inline-block px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs font-semibold mb-2">
           {event.date}
         </span>
-        <h4 className="font-bold text-slate-800 dark:text-white text-base mb-1">{event.title}</h4>
-        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{event.description}</p>
+        <h4 className="font-bold text-slate-800 dark:text-white text-base mb-1">{t(event.titleKey as any)}</h4>
+        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{t(event.descKey as any)}</p>
       </div>
     </motion.div>
   );
@@ -62,6 +64,7 @@ function TimelineItem({ event, index }: { event: typeof timelineEvents[0]; index
 export default function About() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
+  const { t } = useLanguage();
 
   return (
     <section id="apropos" className="relative overflow-hidden" aria-label="À propos">
@@ -81,14 +84,14 @@ export default function About() {
           transition={{ duration: 0.7 }}
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 text-xs font-semibold tracking-widest uppercase mb-4">
-            Notre histoire
+            {t('about_badge')}
           </span>
           <h2 className="section-title text-slate-900 dark:text-white mb-4">
-            À{' '}
-            <span className="text-gradient">propos</span>
+            {t('about_title_pre')}{' '}
+            <span className="text-gradient">{t('about_title')}</span>
           </h2>
           <p className="section-subtitle max-w-2xl mx-auto">
-            Une chorale universitaire née de la passion pour la musique chrétienne et le service des étudiants.
+            {t('about_sub')}
           </p>
         </motion.div>
 
@@ -105,10 +108,10 @@ export default function About() {
                 <div className="w-9 h-9 rounded-xl bg-sky-100 dark:bg-sky-900/40 flex items-center justify-center">
                   <Music4 size={18} className="text-sky-500" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white">Qui sommes-nous ?</h3>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t('about_who')}</h3>
               </div>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
-                Nous sommes une chorale composée d'étudiants de l'EMIT (École de Management et d'Innovation Technologique) de l'Université de Fianarantsoa. Notre chorale réunit des voix passionnées, unies par la foi et l'amour de la musique.
+                {t('about_who_text')}
               </p>
             </motion.div>
 
@@ -123,13 +126,13 @@ export default function About() {
                 <div className="w-9 h-9 rounded-xl bg-sky-100 dark:bg-sky-900/40 flex items-center justify-center">
                   <Target size={18} className="text-sky-500" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white">Notre mission</h3>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t('about_mission')}</h3>
               </div>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm mb-3">
-                La création d'EMIFI vise à accompagner les étudiants durant leur parcours universitaire grâce à la musique chrétienne.
+                {t('about_mission1')}
               </p>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
-                Au-delà d'être un groupe évangélique, EMIFI constitue également un espace permettant aux étudiants de développer leurs talents artistiques tout en poursuivant leurs études.
+                {t('about_mission2')}
               </p>
             </motion.div>
 
@@ -140,7 +143,7 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
             >
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Historique</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{t('about_history')}</h3>
               <div>
                 {timelineEvents.map((event, i) => (
                   <TimelineItem key={i} event={event} index={i} />
@@ -186,12 +189,12 @@ export default function About() {
                 <div className="absolute bottom-6 left-6 right-6 glass rounded-2xl border border-white/20 px-5 py-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-white font-bold text-sm">EMIFI Chorale</p>
+                      <p className="text-white font-bold text-sm">EMIFI</p>
                       <p className="text-white/60 text-xs">EMIT – Fianarantsoa</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sky-300 font-bold text-sm">Depuis 2018</p>
-                      <p className="text-white/50 text-xs">+40 membres</p>
+                      <p className="text-sky-300 font-bold text-sm">{t('about_since')}</p>
+                      <p className="text-white/50 text-xs">{t('about_menbre')}</p>
                     </div>
                   </div>
                 </div>

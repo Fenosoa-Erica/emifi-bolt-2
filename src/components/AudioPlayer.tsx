@@ -2,9 +2,10 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Play, Pause, SkipBack, SkipForward, Heart,
-  Shuffle, Repeat, Volume2, VolumeX, List, ChevronDown, Loader2,
+  Shuffle, Repeat, Volume2, VolumeX, List, ChevronDown, Loader2, Search, X,
 } from 'lucide-react';
 import assetManifest from 'virtual:emifi-assets';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PlayerSong {
   id: string;
@@ -36,6 +37,12 @@ export default function AudioPlayer() {
   const [muted, setMuted] = useState(false);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [showPlaylist, setShowPlaylist] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const { t } = useLanguage();
+
+  const filteredSongs = searchQuery.trim().length > 0
+    ? songs.map((s, i) => ({ s, i })).filter(({ s }) => s.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    : songs.map((s, i) => ({ s, i }));
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   // Keep refs for stale-closure-free event handlers
@@ -341,34 +348,58 @@ export default function AudioPlayer() {
                 transition={{ duration: 0.25 }}
                 className="overflow-hidden"
               >
-                <div className="pt-2 space-y-0.5 max-h-44 overflow-y-auto no-scrollbar">
-                  {songs.map((song, i) => (
-                    <motion.button
-                      key={song.id}
-                      onClick={() => goToTrack(i, true)}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-left transition-colors ${
-                        i === currentIndex
-                          ? 'bg-sky-400/20 text-sky-300'
-                          : 'text-white/60 hover:bg-white/10 hover:text-white/90'
-                      }`}
-                    >
-                      {i === currentIndex && isPlaying ? (
-                        <span className="flex gap-0.5 items-end w-4 h-4 flex-shrink-0">
-                          {[1, 3, 2].map(h => (
-                            <span key={h} className="w-1 bg-sky-400 rounded-sm animate-pulse" style={{ height: `${h * 4}px` }} />
-                          ))}
-                        </span>
-                      ) : (
-                        <span className="text-xs w-4 text-center opacity-40 flex-shrink-0">{i + 1}</span>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold truncate">{song.title}</p>
-                        <p className="text-xs opacity-45 truncate">{song.album}</p>
-                      </div>
-                      <span className="text-xs opacity-35 flex-shrink-0 tabular-nums">{song.duration}</span>
-                    </motion.button>
-                  ))}
+                {/* Search bar */}
+                <div className="relative mb-2 mt-1">
+                  <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white/10 border border-white/10">
+                    <Search size={12} className="text-white/40 flex-shrink-0" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      placeholder={t('search_in_list')}
+                      className="bg-transparent outline-none text-xs flex-1 text-white/80 placeholder:text-white/30 min-w-0"
+                      aria-label={t('search_in_list')}
+                    />
+                    {searchQuery && (
+                      <button onClick={() => setSearchQuery('')} className="text-white/40 hover:text-white/70">
+                        <X size={11} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-0.5 max-h-36 overflow-y-auto no-scrollbar">
+                  {filteredSongs.length === 0 ? (
+                    <p className="text-center text-white/30 text-xs py-4">{t('results_none')} « {searchQuery} »</p>
+                  ) : (
+                    filteredSongs.map(({ s: song, i }) => (
+                      <motion.button
+                        key={song.id}
+                        onClick={() => goToTrack(i, true)}
+                        whileTap={{ scale: 0.98 }}
+                        className={`w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-left transition-colors ${
+                          i === currentIndex
+                            ? 'bg-sky-400/20 text-sky-300'
+                            : 'text-white/60 hover:bg-white/10 hover:text-white/90'
+                        }`}
+                      >
+                        {i === currentIndex && isPlaying ? (
+                          <span className="flex gap-0.5 items-end w-4 h-4 flex-shrink-0">
+                            {[1, 3, 2].map(h => (
+                              <span key={h} className="w-1 bg-sky-400 rounded-sm animate-pulse" style={{ height: `${h * 4}px` }} />
+                            ))}
+                          </span>
+                        ) : (
+                          <span className="text-xs w-4 text-center opacity-40 flex-shrink-0">{i + 1}</span>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-semibold truncate">{song.title}</p>
+                          <p className="text-xs opacity-45 truncate">{song.album}</p>
+                        </div>
+                        <span className="text-xs opacity-35 flex-shrink-0 tabular-nums">{song.duration}</span>
+                      </motion.button>
+                    ))
+                  )}
                 </div>
               </motion.div>
             )}

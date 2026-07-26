@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, Camera } from 'lucide-react';
 import { galleryImages } from '@/data';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 /* ─── Lightbox ──────────────────────────────────────────────────────────── */
 interface LightboxProps {
@@ -89,6 +90,7 @@ function GalleryItem({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-50px' });
+  const { t } = useLanguage();
 
   return (
     <motion.div
@@ -115,7 +117,7 @@ function GalleryItem({
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 dark:bg-white/20 dark:backdrop-blur-sm text-slate-800 dark:text-white text-xs font-semibold shadow-lg">
           <ZoomIn size={13} />
-          Voir
+          {t('gal_view')}
         </div>
       </div>
     </motion.div>
@@ -127,6 +129,7 @@ export default function Gallery() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const titleInView = useInView(titleRef, { once: true });
+  const { t } = useLanguage();
 
   const openLightbox = (i: number) => setLightboxIndex(i);
   const closeLightbox = () => setLightboxIndex(null);
@@ -146,13 +149,13 @@ export default function Gallery() {
         >
           <span className="inline-flex items-center gap-2 text-sky-500 dark:text-sky-400 text-xs font-bold tracking-widest uppercase mb-3">
             <Camera size={13} />
-            Galerie
+            {t('gal_badge')}
           </span>
           <h2 className="section-title text-slate-900 dark:text-white mb-3">
-            Nos <span className="text-gradient">moments</span>
+            {t('gal_title_pre')} <span className="text-gradient">{t('gal_title')}</span>
           </h2>
           <p className="section-subtitle max-w-lg mx-auto">
-            Prestations, répétitions et instants de partage capturés au fil des années.
+            {t('gal_sub')}
           </p>
         </motion.div>
 

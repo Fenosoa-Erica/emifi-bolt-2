@@ -91,7 +91,7 @@ export default function LoadingScreen() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.75 }}
               >
-                Chorale Universitaire · Madagascar
+                Chorale EMIT Université de Fianaratsoa · Madagascar
               </motion.p>
             </div>
 

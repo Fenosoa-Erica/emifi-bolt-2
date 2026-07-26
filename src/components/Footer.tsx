@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion';
 import { Facebook, Youtube, Mail, MapPin, ExternalLink } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-const navLinks = [
-  { label: 'Accueil', href: '#accueil' },
-  { label: 'À propos', href: '#apropos' },
-  { label: 'Réalisations', href: '#realisations' },
-  { label: 'Galerie', href: '#galerie' },
-  { label: 'Contact', href: '#contact' },
-];
+const navLinkKeys = [
+  { key: 'nav_accueil',      href: '#accueil' },
+  { key: 'nav_apropos',      href: '#apropos' },
+  { key: 'nav_realisations', href: '#realisations' },
+  { key: 'nav_galerie',      href: '#galerie' },
+  { key: 'nav_contact',      href: '#contact' },
+] as const;
 
 export default function Footer() {
+  const { t } = useLanguage();
   const handleNav = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -34,7 +36,7 @@ export default function Footer() {
               className="h-10 w-auto dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.65)]"
             />
             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-xs">
-              La chorale universitaire de l'EMIT – Université de Fianarantsoa. Une voix, une mission.
+              {t('foot_desc')}
             </p>
             <div className="flex items-center gap-3">
               <motion.a
@@ -56,15 +58,15 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="text-slate-900 dark:text-white font-semibold text-sm mb-4">Navigation</h4>
+            <h4 className="text-slate-900 dark:text-white font-semibold text-sm mb-4">{t('foot_nav')}</h4>
             <ul className="space-y-2">
-              {navLinks.map(link => (
+              {navLinkKeys.map(link => (
                 <li key={link.href}>
                   <button
                     onClick={() => handleNav(link.href)}
                     className="text-slate-500 dark:text-slate-400 text-sm hover:text-sky-500 dark:hover:text-sky-400 transition-colors duration-200"
                   >
-                    {link.label}
+                    {t(link.key)}
                   </button>
                 </li>
               ))}
@@ -73,7 +75,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-slate-900 dark:text-white font-semibold text-sm mb-4">Contact</h4>
+            <h4 className="text-slate-900 dark:text-white font-semibold text-sm mb-4">{t('nav_contact')}</h4>
             <ul className="space-y-3">
               <li className="flex items-center gap-2.5 text-slate-500 dark:text-slate-400 text-sm">
                 <Mail size={13} className="text-sky-500 flex-shrink-0" />
@@ -81,7 +83,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-2.5 text-slate-500 dark:text-slate-400 text-sm">
                 <MapPin size={13} className="text-sky-500 flex-shrink-0 mt-0.5" />
-                EMIT – Université de Fianarantsoa, Madagascar
+                {t('cont_addr_value')}
               </li>
             </ul>
           </div>
@@ -90,7 +92,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-slate-200 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-slate-400 dark:text-slate-500 text-xs">
-            © 2026 | EMIFI – Emit Mikalo Fiderana. Tous droits réservés.
+            © 2026 | EMIFI – Emit Mikalo Fiderana. {t('foot_rights')}
           </p>
           <a
             href="http://fenosoa-erica.bolt.host"
